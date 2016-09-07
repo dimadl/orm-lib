@@ -109,7 +109,7 @@ public abstract class AbstractDAO<T extends Entity> {
                 Field fieldId = typeObject.getSuperclass().getDeclaredField(
                         NAME_ID_FIELD);
                 fieldId.setAccessible(true);
-                fieldId.set(object, new Long(resultSet.getLong(1)));
+                fieldId.set(object, new Long(resultSet.getLong(getNameIdColumn())));
 
                 list.add(object);
             }
@@ -325,6 +325,10 @@ public abstract class AbstractDAO<T extends Entity> {
 
                     field.setShort(object, resultSet.getShort(valAnn));
 
+                } else if (boolean.class == typeField) {
+                    field.setBoolean(object, resultSet.getBoolean(valAnn));
+                } else if (Boolean.class == typeField) {
+                    field.setBoolean(object, new Boolean(resultSet.getBoolean(valAnn)));
                 } else {
 
                     field.set(object, resultSet.getObject(valAnn));
